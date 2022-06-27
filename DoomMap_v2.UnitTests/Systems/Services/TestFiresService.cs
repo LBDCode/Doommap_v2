@@ -30,7 +30,7 @@ namespace DoomMap_v2.UnitTests.Systems.Services
         public async Task GetAllFiresAsync_ReturnFireCollection()
         {
             // arrange
-            _context.Fires.AddRange(FiresFixture.GetTestFires());
+            _context.CurrentFires.AddRange(FiresFixture.GetTestFires());
             _context.SaveChanges();
 
             var sut = new FiresService(_context);
@@ -41,31 +41,6 @@ namespace DoomMap_v2.UnitTests.Systems.Services
             // assert
             result.Should().HaveCount(FiresFixture.GetTestFires().Count);
         }
-
-        [Fact]
-        public async Task GetFireByID_ReturnFire()
-        {
-            // arrange
-            _context.Fires.AddRange(FiresFixture.GetTestFires());
-            _context.SaveChanges();
-
-            var sut = new FiresService(_context);
-            
-            List<Fire> testFires = FiresFixture.GetTestFireByID();
-            Fire testFire = testFires.First();
-            int Gid = testFire.Gid;
-
-            // act
-            var result = await sut.GetFireByID(Gid);
-
-            // assert
-            result.Should().HaveCount(1);
-            
-            Fire resultObject = result.First();
-            resultObject.Gid.Should().Be(1);
-            resultObject.Track.Should().Be(1);
-        }
-
 
         public void Dispose()
         {

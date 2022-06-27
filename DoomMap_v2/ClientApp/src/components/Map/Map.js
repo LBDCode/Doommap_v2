@@ -1,27 +1,40 @@
-﻿import +-React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { styled } from '@mui/material/styles';
 import { MapContainer, TileLayer } from 'react-leaflet';
+import { useMap } from 'react-leaflet/hooks'
 import L from 'leaflet';
-import * as API from '../../utils/api';
-
+import "leaflet/dist/leaflet.css";
+import Metrics from '../Metrics/Metrics';
+import AppContextProvider, { AppContext } from '../../context/AppContext';
+import MapLayers from './MapLayers';
 
 export default function Map() {
 
+    const { updateDisasterMetrics, getFeatureData } = useContext(AppContext);
 
-    const [map, setMap] = useState(null)
 
+    function DisplayPosition() {
+        const map = useMap()
 
-    function DisplayPosition({ map }) {
-        const [position, setPosition] = useState(map.getCenter())
+        const [viewPosition, setPosition] = useState(map.getCenter())
         const [viewBounds, setViewBounds] = useState(map.getBounds())
 
         const onMove = useCallback(() => {
-            setPosition(map.getCenter())
-            setViewBounds(map.getBounds())
+
+            let bounds = map.getBounds();
+            let position = map.getCenter();
+
+            if (bounds !== viewBounds || position !== viewPosition) {
+                setPosition(position)
+                setViewBounds(bounds)
+                updateDisasterMetrics(bounds);
+            }
+
         }, [map])
 
         useEffect(() => {
             map.on('move', onMove)
+
             return () => {
                 map.off('move', onMove)
             }
@@ -34,29 +47,25 @@ export default function Map() {
 
     useEffect(() => {
 
-      * +-*9-9**+--+++*-9/86
+        getFeatureData();
 
     }, [])
 
 
+
     return (
         <div>
-            {map ?
-                <DisplayPosition map={map} />
-                :
-                null
-            }
 
             <MapContainer
                 center={[40.4958869189588, -99.2314387964737]}
                 zoom={4}
-                whenCreated={setMap}
                 style={{ height: '100vh' }}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-
+                <DisplayPosition />
+                <MapLayers />
             </MapContainer>
         </div>
 

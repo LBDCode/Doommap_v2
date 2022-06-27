@@ -7,26 +7,28 @@ namespace DoomMap_v2.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FiresController : ControllerBase
+    public class DroughtsController : ControllerBase
     {
 
-        private readonly IFiresService _firesService;
+        private readonly IDroughtsService _droughtsService;
 
 
-        public FiresController(IFiresService firesService)
+        public DroughtsController(IDroughtsService droughtsService)
         {
-            _firesService = firesService;
+            _droughtsService = droughtsService;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllFires()
+        public async Task<IActionResult> GetAllDroughts()
         {
-            var fires = await _firesService.GetAllFires();
+            Debug.WriteLine("in droughts controller");
 
-            if (fires.Any())
+            var droughts = await _droughtsService.GetAllDroughts();
+
+            if (droughts.Any())
             {
-                return Ok(fires);
+                return Ok(droughts);
             } else
             {
                 return NotFound();
@@ -51,16 +53,16 @@ namespace DoomMap_v2.Controllers
         //}
 
 
-        [HttpPost]
-        [Route("viewfires")]
-        public async Task<ActionResult> Post([FromBody] ViewBounds viewBounds)
-        {
-            Debug.WriteLine("in controller");
+        //[HttpPost]
+        //[Route("viewfires")]
+        //public async Task<ActionResult> Post([FromBody] ViewBounds viewBounds)
+        //{
+        //    Debug.WriteLine("in controller");
 
-            var fires = await _firesService.GetFiresInView(viewBounds);
+        //    var fires = await _firesService.GetFiresInView(viewBounds);
 
-            return Ok(fires);
-        }
+        //    return Ok(fires);
+        //}
 
     }
 }

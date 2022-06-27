@@ -1,14 +1,14 @@
 
 
 export default {
-    getFires: function () {
-        return fetch(`api/fires`);
+    getAllFires: function () {
+        return fetch(`/fires`);
     },
     getAdvisoryAreas: function (type) {
         return fetch(`api/advisoryareas/${type}`);
     },
     getDroughtConditions: function() {
-        return fetch(`api/drought`);
+        return fetch(`/droughts`);
     },
     getStormConditions: function () {
         return fetch(`api/storm`);
@@ -16,8 +16,22 @@ export default {
     getStormTrack: function (component) {
         return fetch(`api/stormtrack/${component}`);
     },
+    getMetricsInBounds: function (boundingCoords) {
+        return fetch('/metrics/viewmetrics', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(boundingCoords)
+        });
+    },
     getFiresInBounds: function (boundingCoords) {
-        return fetch('api/fires/viewfires', {
+        return fetch('/fires/viewfires', {
             method: 'POST',
             mode: 'cors', 
             cache: 'no-cache', 

@@ -11,92 +11,78 @@ namespace DoomMap_v2.UnitTests.Fixtures
     public static class FiresFixture
     {
 
-        public static List<Fire> GetEmptyFiresList()
+        public static List<CurrentFire> GetEmptyFiresList()
         {
-            return new List<Fire>();
+            return new List<CurrentFire>();
         }
 
 
-        public static List<Fire> GetTestFireByID() => new()
-        {
-            new Fire
-            {
-                Gid = 1,
-                Latitude = (decimal?)18.925,
-                Longitude = (decimal?)-70.349,
-                Brightness = (decimal?)320.1,
-                Scan = 1,
-                Track = 1,
-                AcqTime = "0250",
-                Satellite = "T",
-                Confidence = 100,
-                Version = "6.1NRT",
-                BrightT31 = (decimal?)293.9,
-                Frp = (decimal?)16.9,
-                Daynight = "N",
-                Geom = new Point(-70.349, 18.925)
-            },
-
-        };
-
-
-        public static List<Fire> GetTestFires() => new()
+        public static List<CurrentFire> GetTestFires() => new()
         {
 
-            new Fire
+            new CurrentFire
             {
-                Gid = 1,
-                Latitude = (decimal?)18.925,
-                Longitude = (decimal?)-70.349,
-                Brightness = (decimal?)320.1,
-                Scan = 1,
-                Track = 1,
-                AcqTime = "0250",
-                Satellite = "T",
-                Confidence = 100,
-                Version = "6.1NRT",
-                BrightT31 = (decimal?)293.9,
-                Frp = (decimal?)16.9,
-                Daynight = "N",
-                Geom = new Point(-70.349, 18.925)
-            },            
-            new Fire
-            {
-                Gid = 2,
-                Latitude = (decimal?)18.923,
-                Longitude = (decimal?)-70.359,
-                Brightness = (decimal?)320.9,
-                Scan = 1,
-                Track = 1,
-                AcqTime = "0250",
-                Satellite = "T",
-                Confidence = 100,
-                Version = "6.1NRT",
-                BrightT31 = (decimal?)294.2,
-                Frp = (decimal?)17.8,
-                Daynight = "N",
-                Geom = new Point(-70.359, 18.923)
+
+                Objectid = 248423,
+                Dailyacres = 319840,
+                Estimatedcosttodate = 206357595,
+                Firebehaviorgeneral = "Moderate",
+                Firebehaviorgeneral1 = "Flanking",
+                Firebehaviorgeneral2 = "Backing",
+                Firebehaviorgeneral3 = "Spotting",
+                Firediscoverydatetime = DateTime.Parse("2022-04-06T00:00:00"),
+                Firemgmtcomplexity = "Type 1 Incident",
+                Incidentname = "Hermits Peak",
+                Incidentshortdescription = "12 Miles NW of Las Vegas NM",
+                Totalincidentpersonnel = 2685,
+                CreatedondatetimeDt =  DateTime.Parse("2022-04-06T00:00:00"),
+                ModifiedondatetimeDt =  DateTime.Parse("2022-06-10T00:00:00"),
+                Geom = new Point(-105.399, 35.718),
             },
-            new Fire
+            new CurrentFire
             {
-                Gid = 3,
-                Latitude = (decimal?)42.298,
-                Longitude = (decimal?)-83.153,
-                Brightness = (decimal?)300.5,
-                Scan = (decimal?)1.9,
-                Track = (decimal?)1.3,
-                AcqTime = "0300",
-                Satellite = "T",
-                Confidence = 29,
-                Version = "6.1NRT",
-                BrightT31 = (decimal?)286,
-                Frp = (decimal?)12.9,
-                Daynight = "N",
-                Geom = new Point(-83.153, 42.298)
+                Objectid = 250161,
+                Dailyacres = 59359,
+                Estimatedcosttodate = 12500000,
+                Firebehaviorgeneral = "Minimal",
+                Firebehaviorgeneral1 = "Backing",
+                Firebehaviorgeneral2 = "Creeping",
+                Firebehaviorgeneral3 = "Smoldering",
+                Firediscoverydatetime = DateTime.Parse("2022-04-17T00:00:00"),
+                Firemgmtcomplexity = "Type 2 Incident",
+                Incidentname = "Cooks Peak",
+                Incidentshortdescription = "Northeast of Ocate NM, burning on private and state trust",
+                Totalincidentpersonnel = 15,
+                CreatedondatetimeDt = DateTime.Parse("2022-04-17T00:00:00"),
+                ModifiedondatetimeDt =  DateTime.Parse("2022-05-31T00:00:00"),
+                Geom = new Point(-105.037, 36.244),
+            },
+            new CurrentFire
+            {
+                Objectid = 250173,
+                Dailyacres = 19105,
+                Estimatedcosttodate = 5078000,
+                Firebehaviorgeneral = "Minimal",
+                Firebehaviorgeneral1 = "Smoldering",
+                Firebehaviorgeneral2 = "Smoldering",
+                Firebehaviorgeneral3 = "Smoldering",
+                Firediscoverydatetime = DateTime.Parse("2022-04-17T00:00:00"),
+                Firemgmtcomplexity = "Type 4 Incident",
+                Incidentname = "Tunnel",
+                Incidentshortdescription = "Northeast of city of Flagstaff city limits",
+                Totalincidentpersonnel = 0,
+                CreatedondatetimeDt = DateTime.Parse("2022-04-17T00:00:00"),
+                ModifiedondatetimeDt =  DateTime.Parse("2022-06-02T00:00:00"),
+                Geom = new Point(-111.588, 35.304),
             }
         };
     }
 }
+
+
+
+
+
 
 
 

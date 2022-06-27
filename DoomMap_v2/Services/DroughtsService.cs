@@ -5,30 +5,30 @@ using System.Diagnostics;
 
 namespace DoomMap_v2.Services
 {
-    public interface IFiresService
+    public interface IDroughtsService
     {
-        public Task<List<CurrentFire>> GetAllFires();
+        public Task<List<DroughtCondition>> GetAllDroughts();
         //public Task<List<Fire>> GetFireByID(int fireID);
 
-        public Task<List<CurrentFire>> GetFiresInView(ViewBounds viewBounds);
+        public Task<List<DroughtCondition>> GetDroughtsInView(ViewBounds viewBounds);
 
     }
 
-    public class FiresService: IFiresService
+    public class DroughtsService: IDroughtsService
     {
         private readonly DoomMapContext _context;
 
-        public FiresService(DoomMapContext context)
+        public DroughtsService(DoomMapContext context)
         {
             _context = context;
         }
 
-        public async Task<List<CurrentFire>> GetAllFires()
+        public async Task<List<DroughtCondition>> GetAllDroughts()
         { 
-            List<CurrentFire> fires = new List<CurrentFire>();
-            fires = await (from FireList in _context.CurrentFires select FireList).ToListAsync();
+            List<DroughtCondition> droughts = new List<DroughtCondition>();
+            droughts = await (from DroughtList in _context.DroughtConditions select DroughtList).ToListAsync();
 
-            return fires;            
+            return droughts;            
 
         }
 
@@ -45,7 +45,7 @@ namespace DoomMap_v2.Services
         //}
 
 
-        public async Task<List<CurrentFire>> GetFiresInView(ViewBounds viewBounds)
+        public async Task<List<DroughtCondition>> GetDroughtsInView(ViewBounds viewBounds)
         {
 
             Envelope envelope = new(viewBounds.xmin, viewBounds.xmax, viewBounds.ymin, viewBounds.ymax);
@@ -53,10 +53,10 @@ namespace DoomMap_v2.Services
             Geometry geometry = factory.ToGeometry(envelope);
 
 
-            List<CurrentFire> fires = await _context.CurrentFires.Where(c => geometry.Contains(c.Geom)).ToListAsync();
+            List<DroughtCondition> droughts = await _context.DroughtConditions.Where(c => geometry.Contains(c.Geom)).ToListAsync();
 
 
-            return fires;
+            return droughts;
 
         }
     }
