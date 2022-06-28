@@ -7,23 +7,24 @@ namespace DoomMap_v2.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DroughtsController : ControllerBase
+    public class AdvisoryAreasController : ControllerBase
     {
 
-        private readonly IDroughtsService _droughtsService;
+        private readonly IAdvisoryAreasService _advisoryAreasService;
 
 
-        public DroughtsController(IDroughtsService droughtsService)
+        public AdvisoryAreasController(IAdvisoryAreasService advisoryAreasService)
         {
-            _droughtsService = droughtsService;
+            _advisoryAreasService = advisoryAreasService;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDroughts()
+        public async Task<IActionResult> GetAllAreass()
         {
+            Debug.WriteLine("in areas controller");
 
-            var droughts = await _droughtsService.GetAllDroughts();
+            var droughts = await _advisoryAreasService.GetAllAreas();
 
             if (droughts.Any())
             {

@@ -61,8 +61,6 @@ namespace DoomMap_v2.Services
 
 
 
-            Debug.WriteLine(droughts.Count());
-
             int numberFires = fires.Count() > 0 ? fires[0].rowCount : 0;
             decimal totalDailyAcres = fires.Count() > 0 ? (decimal)fires[0].rowSum : (decimal)0.0;
             int numberDroughts = droughts.Count() > 0 ?  droughts[0].rowCount : 0;

@@ -74,5 +74,6 @@ void ConfigureServices(IServiceCollection services)
     services.AddTransient<IFiresService, FiresService>();
     services.AddTransient<IMetricsService, MetricsService>();
     services.AddTransient<IDroughtsService, DroughtsService>();
+    services.AddTransient<IAdvisoryAreasService, AdvisoryAreasService>();
 
 }

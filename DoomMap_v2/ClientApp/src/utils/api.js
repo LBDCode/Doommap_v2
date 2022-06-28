@@ -5,7 +5,7 @@ export default {
         return fetch(`/fires`);
     },
     getAdvisoryAreas: function (type) {
-        return fetch(`api/advisoryareas/${type}`);
+        return fetch(`advisoryareas/`);
     },
     getDroughtConditions: function() {
         return fetch(`/droughts`);

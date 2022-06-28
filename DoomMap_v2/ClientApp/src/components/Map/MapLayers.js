@@ -20,7 +20,7 @@ let DefaultIcon = L.icon({
 
 export default function Map(props) {
 
-    const { updateDisasterMetrics, allFires, allDroughts } = useContext(AppContext);
+    const { updateDisasterMetrics, allFires, allDroughts, allAreas } = useContext(AppContext);
 
     const returnStormTrackCoordinates = (geoJSONcoords) => {
 
@@ -127,6 +127,29 @@ export default function Map(props) {
                         : null
                     }
 
+                </FeatureGroup>
+            </LayersControl.Overlay>
+            <LayersControl.Overlay checked name="Fire Warnings/Red Flag Areas">
+                <FeatureGroup>
+                    {
+                        allAreas ? allAreas.map(area => {
+
+                            if (area && area['geom'] && area.prodType == 'Fire Weather Watch') {
+                                return (
+                                    < GeoJSON pathOptions={redOptions} key={area['gid']} data={area['geom']}>
+                                        <Tooltip sticky>
+                                            <span>{area['prodType']}</span>
+                                            <br />
+                                            <span>In Effect: {area['onset']} - {area['ends']}</span>
+                                            <br />
+                                        </Tooltip>
+                                    </GeoJSON>
+                                )
+                            }
+
+                        })
+                            : null
+                    }
                 </FeatureGroup>
             </LayersControl.Overlay>
         </LayersControl>

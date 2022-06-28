@@ -8,6 +8,7 @@ class AppContextProvider extends Component {
     state = {
         allFires: null,
         allDroughts: null,
+        allAreas: null,
         historicalData: null,
         numberFires: null,
         numberDroughts: null,
@@ -26,10 +27,16 @@ class AppContextProvider extends Component {
 
         API.getDroughtConditions().then(response => response.json())
             .then(data => {
-                console.log("droughts", data)
                 this.setState({ allDroughts: data})
             })
             .catch(err => console.log(err))
+
+        API.getAdvisoryAreas().then(response => response.json())
+            .then(data => {
+                console.log("areas: ", data)
+                this.setState({ allAreas: data})
+            })
+        .catch(err=> console.log(err))
 
     }
 
@@ -46,7 +53,7 @@ class AppContextProvider extends Component {
 
         API.getMetricsInBounds(polyCoords).then(response => response.json())
             .then(data => {
-                console.log(data)
+
                 this.setState({ numberFires: data.numberFires })
                 this.setState({ totalDailyAcres: data.totalDailyAcres })
                 this.setState({ numberDroughts: data.numberDroughts })
@@ -81,7 +88,7 @@ class AppContextProvider extends Component {
                 totalDailyAcres: this.state.totalDailyAcres,
                 numberDroughts: this.state.numberDroughts,
                 acresDroughts: this.state.acresDroughts,
-
+                allAreas: this.state.allAreas,
             }}>
                 {this.props.children}
             </AppContext.Provider>
