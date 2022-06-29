@@ -72,6 +72,11 @@ namespace DoomMap_v2.Models
                     .HasColumnType("geometry(MultiPolygon,4326)")
                     .HasColumnName("geom");
 
+
+                entity.Property(e => e.Geog)
+                    .HasColumnType("geography(MultiPolygon,4326)")
+                    .HasColumnName("geog");
+
                 entity.Property(e => e.Issuance)
                     .HasMaxLength(25)
                     .HasColumnName("issuance");
@@ -165,6 +170,10 @@ namespace DoomMap_v2.Models
                 entity.Property(e => e.Geom)
                     .HasColumnType("geometry(MultiPolygon,4326)")
                     .HasColumnName("geom");
+
+                entity.Property(e => e.Geog)
+                    .HasColumnType("geography(MultiPolygon,4326)")
+                    .HasColumnName("geog");
 
                 entity.Property(e => e.Objectid).HasColumnName("objectid");
 

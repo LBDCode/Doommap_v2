@@ -53,7 +53,7 @@ class AppContextProvider extends Component {
 
         API.getMetricsInBounds(polyCoords).then(response => response.json())
             .then(data => {
-
+                console.log("metrics: ", data)
                 this.setState({ numberFires: data.numberFires })
                 this.setState({ totalDailyAcres: data.totalDailyAcres })
                 this.setState({ numberDroughts: data.numberDroughts })

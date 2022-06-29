@@ -12,5 +12,7 @@ namespace DoomMap_v2.Models
         public decimal? ShapeLeng { get; set; }
         public decimal? ShapeArea { get; set; }
         public MultiPolygon? Geom { get; set; }
+        public MultiPolygon? Geog { get; set; }
+
     }
 }

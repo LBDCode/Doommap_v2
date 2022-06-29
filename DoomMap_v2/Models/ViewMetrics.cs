@@ -15,5 +15,17 @@ namespace DoomMap_v2.Models
 
         public decimal acresDroughts { get; set; }
 
+        public List<ViewAdvisoryAreasMetrics>? ViewAdvisoryAreasMetrics { get; set; }
+
+
+    }
+
+    public partial class ViewAdvisoryAreasMetrics
+    {
+        public string? areaType { get; set; }
+
+        public int areaCount { get; set; }    
+
+        public double? containedArea { get; set; }
     }
 }
