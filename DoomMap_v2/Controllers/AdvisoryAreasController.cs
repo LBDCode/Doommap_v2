@@ -22,47 +22,15 @@ namespace DoomMap_v2.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAreass()
         {
-            Debug.WriteLine("in areas controller");
 
-            var droughts = await _advisoryAreasService.GetAllAreas();
+            var areas = await _advisoryAreasService.GetAllAreas();
 
-            if (droughts.Any())
-            {
-                return Ok(droughts);
-            } else
-            {
-                return NotFound();
+            return Ok(areas);
 
-            }
 
         }
 
-        //[HttpGet("{objectid}", Name = "GetByFireID")]
-        //public async Task<IActionResult> GetFireByID(string objectid)
-        //{
-        //    var Gid = int.Parse(objectid);
-        //    var fire = await _firesService.GetFireByID(Gid);
 
-        //    if (fire.Any())
-        //    {
-        //        return Ok(fire);
-        //    } else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-
-
-        //[HttpPost]
-        //[Route("viewfires")]
-        //public async Task<ActionResult> Post([FromBody] ViewBounds viewBounds)
-        //{
-        //    Debug.WriteLine("in controller");
-
-        //    var fires = await _firesService.GetFiresInView(viewBounds);
-
-        //    return Ok(fires);
-        //}
 
     }
 }

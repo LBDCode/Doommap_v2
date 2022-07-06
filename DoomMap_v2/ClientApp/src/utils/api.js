@@ -5,16 +5,16 @@ export default {
         return fetch(`/fires`);
     },
     getAdvisoryAreas: function (type) {
-        return fetch(`advisoryareas/`);
+        return fetch(`/advisoryareas`);
     },
     getDroughtConditions: function() {
         return fetch(`/droughts`);
     },
     getStormConditions: function () {
-        return fetch(`api/storm`);
+        return fetch(`/storms`);
     },
     getStormTrack: function (component) {
-        return fetch(`api/stormtrack/${component}`);
+        return fetch(`stormtracks/${component}`);
     },
     getMetricsInBounds: function (boundingCoords) {
         return fetch('/metrics/viewmetrics', {

@@ -6,9 +6,13 @@ export const AppContext = createContext();
 class AppContextProvider extends Component {
 
     state = {
-        allFires: null,
-        allDroughts: null,
-        allAreas: null,
+        allFires: [],
+        allDroughts: [],
+        allAreas: [],
+        allStorms: [],
+        stormTrackLine: [],
+        stormTrackPgn: [],
+        stormTrackPts: [],
         historicalData: null,
         numberFires: null,
         numberDroughts: null,
@@ -19,25 +23,57 @@ class AppContextProvider extends Component {
 
     getFeatureData = () => {
 
-        API.getAllFires().then(response => response.json())
+
+        API.getAllFires()
+            .then(response => response.json())
             .then(data => {
-                this.setState({ allFires: data });
+                    this.setState({ allFires: data })
             })
             .catch(err => console.log(err));
 
-        API.getDroughtConditions().then(response => response.json())
+        API.getDroughtConditions()
+            .then(response => response.json())
             .then(data => {
-                this.setState({ allDroughts: data})
+                this.setState({ allDroughts: data })
             })
             .catch(err => console.log(err))
 
-        API.getAdvisoryAreas().then(response => response.json())
+        API.getAdvisoryAreas()
+            .then(response => response.json())
             .then(data => {
-                console.log("areas: ", data)
-                this.setState({ allAreas: data})
+                this.setState({ allAreas: data })
             })
-        .catch(err=> console.log(err))
+            .catch(err => console.log(err))
 
+        API.getStormConditions()
+            .then(response => response.json())
+            .then(data => {
+                    this.setState({ allStorms: data })
+            })
+            .catch(err => console.log(err))
+
+
+        API.getStormTrack("line")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ stormTrackLine: data })
+            })
+            .catch(err => console.log(err));
+
+        API.getStormTrack("pgn")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ stormTrackPgn: data })
+            })
+            .catch(err => console.log(err));
+
+        API.getStormTrack("pts")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ stormTrackPts: data })
+            })
+            .catch(err => console.log(err));      
+            
     }
 
 
@@ -89,6 +125,11 @@ class AppContextProvider extends Component {
                 numberDroughts: this.state.numberDroughts,
                 acresDroughts: this.state.acresDroughts,
                 allAreas: this.state.allAreas,
+                allStorms: this.state.allStorms,
+                stormTrackLine: this.state.stormTrackLine,
+                stormTrackPgn: this.state.stormTrackPgn,
+                stormTrackPts: this.state.stormTrackPts
+
             }}>
                 {this.props.children}
             </AppContext.Provider>

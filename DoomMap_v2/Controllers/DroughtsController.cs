@@ -24,44 +24,22 @@ namespace DoomMap_v2.Controllers
         {
 
             var droughts = await _droughtsService.GetAllDroughts();
+            return Ok(droughts);
 
-            if (droughts.Any())
-            {
-                return Ok(droughts);
-            } else
-            {
-                return NotFound();
-
-            }
 
         }
 
-        //[HttpGet("{objectid}", Name = "GetByFireID")]
-        //public async Task<IActionResult> GetFireByID(string objectid)
-        //{
-        //    var Gid = int.Parse(objectid);
-        //    var fire = await _firesService.GetFireByID(Gid);
 
-        //    if (fire.Any())
-        //    {
-        //        return Ok(fire);
-        //    } else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
+        [HttpPost]
+        [Route("viewdroughts")]
+        public async Task<ActionResult> Post([FromBody] ViewBounds viewBounds)
+        {
+            Debug.WriteLine("in controller");
 
+            var droughts = await _droughtsService.GetDroughtsInView(viewBounds);
 
-        //[HttpPost]
-        //[Route("viewfires")]
-        //public async Task<ActionResult> Post([FromBody] ViewBounds viewBounds)
-        //{
-        //    Debug.WriteLine("in controller");
-
-        //    var fires = await _firesService.GetFiresInView(viewBounds);
-
-        //    return Ok(fires);
-        //}
+            return Ok(droughts);
+        }
 
     }
 }

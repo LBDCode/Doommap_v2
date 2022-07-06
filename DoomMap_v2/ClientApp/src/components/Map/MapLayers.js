@@ -20,7 +20,7 @@ let DefaultIcon = L.icon({
 
 export default function Map(props) {
 
-    const { updateDisasterMetrics, allFires, allDroughts, allAreas } = useContext(AppContext);
+    const { updateDisasterMetrics, allFires, allDroughts, allAreas, allStorms, stormTrackLine, stormTrackPgn, stormTrackPts  } = useContext(AppContext);
 
     const returnStormTrackCoordinates = (geoJSONcoords) => {
 
@@ -93,7 +93,10 @@ export default function Map(props) {
 
                                 let color;
 
-                                if (dmScore === 2) {
+                                if (dmScore === 1) {
+                                    color = greenOptions;
+                                }
+                                else if (dmScore === 2) {
                                     color = yellowOptions;
                                 } else if (dmScore === 3) {
                                     color = orangeOptions;
@@ -104,6 +107,7 @@ export default function Map(props) {
                             }
 
                             const dmData = {
+                                1: "Moderate Drought",
                                 2: "Severe Drought",
                                 3: "Extreme Drought",
                                 4: "Exceptional Drought"
@@ -149,6 +153,113 @@ export default function Map(props) {
 
                         })
                             : null
+                    }
+                </FeatureGroup>
+            </LayersControl.Overlay>
+            <LayersControl.Overlay checked name="Storm Surge">
+
+                <FeatureGroup>
+                    { allStorms ? allStorms.map(area => {
+
+                            function returnColor(max_ft) {
+
+                                let color;
+
+                                if (max_ft < 2) {
+                                    color = blueOptions;
+                                } else if (max_ft >= 2 && max_ft < 4) {
+                                    color = greenOptions;
+                                } else if (max_ft >= 4 && max_ft < 6) {
+                                    color = yellowOptions;
+                                } else if (max_ft >= 6 && max_ft < 8) {
+                                    color = orangeOptions;
+                                } else if (max_ft >= 8 && max_ft < 9.5) {
+                                    color = redOptions;
+                                } else if (max_ft >= 9.5) {
+                                    color = purpleOptions;
+                                }
+
+                                return color;
+                            }
+
+
+                            if (area && area['geom'] && area.maxFt) {
+                                return (
+                                    < GeoJSON pathOptions={returnColor(area.maxFt)} key={area['gid']} data={area['geom']} />
+                                )
+                            }
+
+                        })
+                        : null
+                    }
+                </FeatureGroup>
+            </LayersControl.Overlay>
+            <LayersControl.Overlay checked name="Storm Track">
+                <FeatureGroup>
+                    {stormTrackLine ? 
+                        stormTrackLine.map(track => {
+                            if (track && track['geom']) {
+                                let coords = returnStormTrackCoordinates(track['geom']['coordinates'][0])
+                                return (
+                                    <Polyline
+                                        positions={coords}
+                                        color={'black'}
+                                    />
+                                )
+                            }
+                        })
+                        : null
+                    }
+                </FeatureGroup>
+            </LayersControl.Overlay>
+            <LayersControl.Overlay checked name="Storm Area">
+                <FeatureGroup>
+                    {stormTrackPgn ? 
+                        stormTrackPgn.map(area => {
+                            const stormTypes = {
+                                "HU": "Hurricane",
+                                "TD": "Tropical Depression",
+                                "TS": "Tropical Storm"
+                            };
+
+                            if (area && area['geom']) {
+                                return (
+                                    < GeoJSON pathOptions={blackOptions} key={area['gid']} data={area['geom']}>
+                                        <Tooltip direction="bottom" opacity={1} permanent>
+                                            <span>{stormTypes[area['stormtype']]} {area['stormname']}</span>
+                                            <br />
+                                            <span>Advisory: {area['advisnum']}</span>
+                                            <br />
+                                        </Tooltip>
+                                    </ GeoJSON>
+                                )
+                            }
+                        })
+                        : null
+                    }
+                </FeatureGroup>
+            </LayersControl.Overlay>
+            <LayersControl.Overlay checked name="Storm Timeline">
+                <FeatureGroup>
+                    {stormTrackPts ?
+                        stormTrackPts.map(point => {
+
+                            if (point && point['geom']) {
+                                const pointCoords = [point['geom']['coordinates'][1], point['geom']['coordinates'][0]]
+                                return (
+                                    <CircleMarker center={pointCoords} key={point['gid']} color={'white'}>
+                                        <Tooltip direction="bottom" opacity={1} >
+                                            <span>{point['stormname']} - {point['tcdvlp']}</span>
+                                            <br />
+                                            <span>wind gusts up to {point['gust']} MPH</span>
+                                            <br />
+                                            <span>{point['datelbl']}</span>
+                                        </Tooltip>
+                                    </CircleMarker>
+                                )
+                            }
+                        })
+                        : null
                     }
                 </FeatureGroup>
             </LayersControl.Overlay>

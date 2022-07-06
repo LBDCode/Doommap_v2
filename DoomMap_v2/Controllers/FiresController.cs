@@ -23,32 +23,10 @@ namespace DoomMap_v2.Controllers
         public async Task<IActionResult> GetAllFires()
         {
             var fires = await _firesService.GetAllFires();
+            return Ok(fires);
 
-            if (fires.Any())
-            {
-                return Ok(fires);
-            } else
-            {
-                return NotFound();
-
-            }
 
         }
-
-        //[HttpGet("{objectid}", Name = "GetByFireID")]
-        //public async Task<IActionResult> GetFireByID(string objectid)
-        //{
-        //    var Gid = int.Parse(objectid);
-        //    var fire = await _firesService.GetFireByID(Gid);
-
-        //    if (fire.Any())
-        //    {
-        //        return Ok(fire);
-        //    } else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
 
 
         [HttpPost]
