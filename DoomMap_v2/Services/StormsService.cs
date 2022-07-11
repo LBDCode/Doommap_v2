@@ -25,25 +25,41 @@ namespace DoomMap_v2.Services
 
         public async Task<List<StormCondition>> GetAllStorms()
         { 
-            List<StormCondition> storms = new List<StormCondition>();
-            storms = await (from StormsList in _context.StormConditions select StormsList).ToListAsync();
 
-            return storms;            
+            try
+            {
+                List<StormCondition> storms = new List<StormCondition>();
+                storms = await (from StormsList in _context.StormConditions select StormsList).ToListAsync();
+
+                return storms;
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("ERROR in getting all storm data: " + ex.Message, ex));
+
+            }
 
         }
 
         public async Task<List<StormCondition>> GetStormsInView(ViewBounds viewBounds)
         {
 
-            Envelope envelope = new(viewBounds.xmin, viewBounds.xmax, viewBounds.ymin, viewBounds.ymax);
-            GeometryFactory factory = new(new PrecisionModel(), 4326);
-            Geometry geometry = factory.ToGeometry(envelope);
 
+            try
+            {
+                Envelope envelope = new(viewBounds.xmin, viewBounds.xmax, viewBounds.ymin, viewBounds.ymax);
+                GeometryFactory factory = new(new PrecisionModel(), 4326);
+                Geometry geometry = factory.ToGeometry(envelope);
 
-            List<StormCondition> storms = await _context.StormConditions.Where(c => geometry.Contains(c.Geom)).ToListAsync();
+                List<StormCondition> storms = await _context.StormConditions.Where(c => geometry.Contains(c.Geom)).ToListAsync();
 
+                return storms;
 
-            return storms;
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("Error in getting all storm view data: " + ex.Message));
+            }
 
         }
     }

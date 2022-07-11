@@ -27,14 +27,8 @@ namespace DoomMap_v2.Controllers
 
             var storms = await _stormsService.GetAllStorms();
 
-            if (storms.Any())
-            {
-                return Ok(storms);
-            } else
-            {
-                return NotFound();
+            return Ok(storms);
 
-            }
 
         }
 

@@ -25,10 +25,19 @@ namespace DoomMap_v2.Services
 
         public async Task<List<CurrentFire>> GetAllFires()
         { 
-            List<CurrentFire> fires = new List<CurrentFire>();
-            fires = await (from FireList in _context.CurrentFires select FireList).ToListAsync();
+            try
+            {
+                List<CurrentFire> fires = new List<CurrentFire>();
+                fires = await (from FireList in _context.CurrentFires select FireList).ToListAsync();
 
-            return fires;            
+                return fires;
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("ERROR in getting all fire data: " + ex.Message, ex));
+
+            }
+
 
         }
 
@@ -48,15 +57,25 @@ namespace DoomMap_v2.Services
         public async Task<List<CurrentFire>> GetFiresInView(ViewBounds viewBounds)
         {
 
-            Envelope envelope = new(viewBounds.xmin, viewBounds.xmax, viewBounds.ymin, viewBounds.ymax);
-            GeometryFactory factory = new(new PrecisionModel(), 4326);
-            Geometry geometry = factory.ToGeometry(envelope);
+            try
+            {
+                Envelope envelope = new(viewBounds.xmin, viewBounds.xmax, viewBounds.ymin, viewBounds.ymax);
+                GeometryFactory factory = new(new PrecisionModel(), 4326);
+                Geometry geometry = factory.ToGeometry(envelope);
 
 
-            List<CurrentFire> fires = await _context.CurrentFires.Where(c => geometry.Contains(c.Geom)).ToListAsync();
+                List<CurrentFire> fires = await _context.CurrentFires.Where(c => geometry.Contains(c.Geom)).ToListAsync();
 
 
-            return fires;
+                return fires;
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("ERROR in getting all fire view data: " + ex.Message, ex));
+
+            }
+
+
 
         }
     }

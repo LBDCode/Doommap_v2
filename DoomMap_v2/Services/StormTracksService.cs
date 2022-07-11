@@ -29,54 +29,87 @@ namespace DoomMap_v2.Services
 
         public async Task<List<StormTrackLin>> GetAllStormTrackLines()
         {
-            List<StormTrackLin> stormTrackLines = new List<StormTrackLin>();
-            stormTrackLines = await (from StormTrackLinesList in _context.StormTrackLins select StormTrackLinesList).ToListAsync();
 
-            return stormTrackLines;
+            try
+            {
+                List<StormTrackLin> stormTrackLines = new List<StormTrackLin>();
+                stormTrackLines = await (from StormTrackLinesList in _context.StormTrackLins select StormTrackLinesList).ToListAsync();
+
+                return stormTrackLines;
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("ERROR in getting all strom track data: " + ex.Message, ex));
+
+            }
+
 
         }
 
         public async Task<List<StormTrackPgn>> GetAllStormTrackPolygons()
         {
-            List<StormTrackPgn> stormTrackPolygons = new List<StormTrackPgn>();
-            stormTrackPolygons = await (from StormTrackPolyList in _context.StormTrackPgns select StormTrackPolyList).ToListAsync();
 
-            return stormTrackPolygons;
+            try
+            {
+                List<StormTrackPgn> stormTrackPolygons = new List<StormTrackPgn>();
+                stormTrackPolygons = await (from StormTrackPolyList in _context.StormTrackPgns select StormTrackPolyList).ToListAsync();
+
+                return stormTrackPolygons;
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("ERROR in getting all strom cone data: " + ex.Message, ex));
+
+            }
+
 
         }
 
         public async Task<List<StormTrackPt>> GetAllStormTrackPoints()
         {
-            List<StormTrackPt> stormTrackPoints = new List<StormTrackPt>();
-            stormTrackPoints = await (from StormTrackPointsList in _context.StormTrackPts select StormTrackPointsList).ToListAsync();
 
-            return stormTrackPoints;
+
+            try
+            {
+                List<StormTrackPt> stormTrackPoints = new List<StormTrackPt>();
+                stormTrackPoints = await (from StormTrackPointsList in _context.StormTrackPts select StormTrackPointsList).ToListAsync();
+
+                return stormTrackPoints;
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("ERROR in getting all strom points data: " + ex.Message, ex));
+
+            }
+
 
         }
-
-        //public async Task<List<Fire>> GetFireByID(int fireID)
-        //{
-        //    List<Fire> fire = new List<Fire>();
-        //    fire = await (from FireList in _context.Fires where FireList.Gid == fireID select FireList)
-        //        .ToListAsync();
-
-        //    return fire;
-
-        //}
 
 
         public async Task<List<DroughtCondition>> GetStormTracksInView(ViewBounds viewBounds)
         {
 
-            Envelope envelope = new(viewBounds.xmin, viewBounds.xmax, viewBounds.ymin, viewBounds.ymax);
-            GeometryFactory factory = new(new PrecisionModel(), 4326);
-            Geometry geometry = factory.ToGeometry(envelope);
+
+            try
+            {
+                Envelope envelope = new(viewBounds.xmin, viewBounds.xmax, viewBounds.ymin, viewBounds.ymax);
+                GeometryFactory factory = new(new PrecisionModel(), 4326);
+                Geometry geometry = factory.ToGeometry(envelope);
 
 
-            List<DroughtCondition> droughts = await _context.DroughtConditions.Where(c => geometry.Contains(c.Geom)).ToListAsync();
+                List<DroughtCondition> droughts = await _context.DroughtConditions.Where(c => geometry.Contains(c.Geom)).ToListAsync();
 
 
-            return droughts;
+                return droughts;
+
+
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("ERROR in getting all strom track view Data: " + ex.Message, ex));
+
+            }
+
 
         }
     }

@@ -22,16 +22,8 @@ namespace DoomMap_v2.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMetrics()
         {
-            var fires = await _metricsService.GetAllMetrics();
-
-            if (fires.Any())
-            {
-                return Ok(fires);
-            } else
-            {
-                return NotFound();
-
-            }
+            var metrics = await _metricsService.GetAllMetrics();
+            return Ok(metrics);
 
         }
       

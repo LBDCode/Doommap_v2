@@ -11,7 +11,7 @@ namespace DoomMap_v2.Services
         Task<ViewMetrics> GetMetricsInView(ViewBounds viewBounds);
     }
 
-    public class MetricsService: IMetricsService
+    public class MetricsService : IMetricsService
     {
         private readonly DoomMapContext _context;
 
@@ -21,80 +21,102 @@ namespace DoomMap_v2.Services
         }
 
         public async Task<List<CurrentFire>> GetAllMetrics()
-        { 
-            List<CurrentFire> fires = new List<CurrentFire>();
-            fires = await (from FireList in _context.CurrentFires select FireList).ToListAsync();
+        {
+            try
+            {
+                List<CurrentFire> fires = new List<CurrentFire>();
+                fires = await (from FireList in _context.CurrentFires select FireList).ToListAsync();
 
-            return fires;            
+                return fires;
+
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("Error in getting all metrics data: " + ex.Message));
+            }
+
 
         }
 
         public async Task<ViewMetrics> GetMetricsInView(ViewBounds viewBounds)
         {
 
-            Envelope envelope = new(viewBounds.xmin, viewBounds.xmax, viewBounds.ymin, viewBounds.ymax);
-            GeometryFactory factory = new(new PrecisionModel(), 4326);
-            Geometry geometry = factory.ToGeometry(envelope);
+
+            try
+            {
+                Envelope envelope = new(viewBounds.xmin, viewBounds.xmax, viewBounds.ymin, viewBounds.ymax);
+                GeometryFactory factory = new(new PrecisionModel(), 4326);
+                Geometry geometry = factory.ToGeometry(envelope);
 
 
-            //List<CurrentFire> fires = await _context.CurrentFires.Where(c => geometry.Contains(c.Geom)).ToListAsync();
+                //List<CurrentFire> fires = await _context.CurrentFires.Where(c => geometry.Contains(c.Geom)).ToListAsync();
 
-            var fires = await (from c in _context.CurrentFires
-                   where geometry.Contains(c.Geom)
-                   group c by 1 into grp
-                   select new
-                   {
-                       rowCount = grp.Count(),
-                       rowSum = grp.Sum(x => x.Dailyacres)
-                   }).ToListAsync();
-
-
-
-            var droughts = await (from c in _context.DroughtConditions
-                    where geometry.Intersects(c.Geom)
-                    group c by 1 into grp
-                    select new
-                    {
-                        rowCount = grp.Count(),
-                        rowSum = grp.Sum(x => x.ShapeArea),
-                        containedArea = grp.Sum(x => x.Geog.Intersection(geometry).Area) * 0.000247105,
-                    }).ToListAsync();
+                var fires = await (from c in _context.CurrentFires
+                                   where geometry.Contains(c.Geom)
+                                   group c by 1 into grp
+                                   select new
+                                   {
+                                       rowCount = grp.Count(),
+                                       rowSum = grp.Sum(x => x.Dailyacres)
+                                   }).ToListAsync();
 
 
 
-
-            List<ViewAdvisoryAreasMetrics> areas = await (from a in _context.AdvisoryAreas 
-                               where geometry.Intersects(a.Geom)
-                               where a.ProdType == "Fire Weather Watch" || a.ProdType == "Heat Advisory" || a.ProdType == "Flood Warning"
-                               group a by a.ProdType into grp
-                               select new ViewAdvisoryAreasMetrics
-                               {
-                                   areaType = grp.Key,
-                                   areaCount = grp.Count(),
-                                   containedArea = grp.Sum(x => x.Geog.Intersection(geometry).Area) * 0.000247105,
-                               }
-
-                               ).ToListAsync();
+                var droughts = await (from c in _context.DroughtConditions
+                                      where geometry.Intersects(c.Geom)
+                                      group c by 1 into grp
+                                      select new
+                                      {
+                                          rowCount = grp.Count(),
+                                          rowSum = grp.Sum(x => x.ShapeArea),
+                                          containedArea = grp.Sum(x => x.Geog.Intersection(geometry).Area) * 0.000247105,
+                                      }).ToListAsync();
 
 
 
-            int numberFires = fires.Count() > 0 ? fires[0].rowCount : 0;
-            decimal totalDailyAcres = fires.Count() > 0 ? (decimal)fires[0].rowSum : (decimal)0.0;
-            int numberDroughts = droughts.Count() > 0 ?  droughts[0].rowCount : 0;
-            decimal acresDroughts = droughts.Count() > 0 ?  (decimal)droughts[0].containedArea : (decimal)0.0;
+
+                List<ViewAdvisoryAreasMetrics> areas = await (from a in _context.AdvisoryAreas
+                                                              where geometry.Intersects(a.Geom)
+                                                              where a.ProdType == "Fire Weather Watch" || a.ProdType == "Heat Advisory" || a.ProdType == "Flood Warning"
+                                                              group a by a.ProdType into grp
+                                                              select new ViewAdvisoryAreasMetrics
+                                                              {
+                                                                  areaType = grp.Key,
+                                                                  areaCount = grp.Count(),
+                                                                  containedArea = grp.Sum(x => x.Geog.Intersection(geometry).Area) * 0.000247105,
+                                                              }
+
+                                   ).ToListAsync();
 
 
 
-            ViewMetrics metrics = new ViewMetrics();
-
-            metrics.numberFires = numberFires;
-            metrics.totalDailyAcres = totalDailyAcres;
-            metrics.numberDroughts = numberDroughts;
-            metrics.acresDroughts = acresDroughts;
-            metrics.ViewAdvisoryAreasMetrics = areas;
+                int numberFires = fires.Count() > 0 ? fires[0].rowCount : 0;
+                decimal totalDailyAcres = fires.Count() > 0 ? (decimal)fires[0].rowSum : (decimal)0.0;
+                int numberDroughts = droughts.Count() > 0 ? droughts[0].rowCount : 0;
+                decimal acresDroughts = droughts.Count() > 0 ? (decimal)droughts[0].containedArea : (decimal)0.0;
 
 
-            return metrics;
+
+                ViewMetrics metrics = new ViewMetrics();
+
+                metrics.numberFires = numberFires;
+                metrics.totalDailyAcres = totalDailyAcres;
+                metrics.numberDroughts = numberDroughts;
+                metrics.acresDroughts = acresDroughts;
+                metrics.ViewAdvisoryAreasMetrics = areas;
+
+
+                return metrics;
+            }
+            catch (Exception ex)
+            {
+                throw (new System.Exception("Error in getting all metrics view data: " + ex.Message));
+            }
+
+
+
+
+
 
         }
     }
