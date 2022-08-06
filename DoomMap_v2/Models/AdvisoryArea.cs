@@ -21,7 +21,6 @@ namespace DoomMap_v2.Models
         public string? MsgType { get; set; }
         public string? ProdType { get; set; }
         public MultiPolygon? Geom { get; set; }
-        public MultiPolygon? Geog { get; set; }
-
+        public Geometry? Geog { get; set; }
     }
 }

@@ -97,7 +97,7 @@ namespace DoomMap_v2.Services
                 Geometry geometry = factory.ToGeometry(envelope);
 
 
-                List<DroughtCondition> droughts = await _context.DroughtConditions.Where(c => geometry.Contains(c.Geom)).ToListAsync();
+                List<DroughtCondition> droughts = await _context.DroughtConditions.Where(c => geometry.Contains(c.Geometry)).ToListAsync();
 
 
                 return droughts;

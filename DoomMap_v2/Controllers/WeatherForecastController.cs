@@ -28,13 +28,6 @@ namespace DoomMap_v2.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult GetFires()
-        {
-            List<Fire> fires = new List<Fire>();
-            fires = (from FireList in _context.Fires select FireList).ToList();
-            return Ok(fires);
-        }
 
     }
 }

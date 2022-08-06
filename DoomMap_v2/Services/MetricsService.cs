@@ -63,13 +63,13 @@ namespace DoomMap_v2.Services
 
 
                 var droughts = await (from c in _context.DroughtConditions
-                                      where geometry.Intersects(c.Geom)
+                                      where geometry.Intersects(c.Geometry)
                                       group c by 1 into grp
                                       select new
                                       {
                                           rowCount = grp.Count(),
                                           rowSum = grp.Sum(x => x.ShapeArea),
-                                          containedArea = grp.Sum(x => x.Geog.Intersection(geometry).Area) * 0.000247105,
+                                          containedArea = grp.Sum(x => x.Geometry.Intersection(geometry).Area) * 0.000247105,
                                       }).ToListAsync();
 
 

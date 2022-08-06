@@ -154,7 +154,7 @@ export default function Nav(props) {
                 </Link>
             </MenuItem>
             <MenuItem>
-                <Link to={"/counter"} href="/map">
+                <Link to={"/map"} href="/map">
                     <MobileIcon > <MapOutlinedIcon /></MobileIcon ><MobileLink>MAP</MobileLink>
                 </Link>
             </MenuItem>

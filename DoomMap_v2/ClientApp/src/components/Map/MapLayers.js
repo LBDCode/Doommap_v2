@@ -114,9 +114,9 @@ export default function Map(props) {
                             }
 
 
-                            if (area && area['geom'] && area.dm && area.dm >= 2) {
+                            if (area && area['geometry'] && area.dm && area.dm >= 2) {
                                 return (
-                                    <GeoJSON pathOptions={returnColor(area.dm)} key={area['gid']} data={area['geom']}>
+                                    <GeoJSON pathOptions={returnColor(area.dm)} key={area['objectid']} data={area['geometry']}>
                                         <Tooltip sticky>
                                             <span>Drought Warning</span>
                                             <br />
